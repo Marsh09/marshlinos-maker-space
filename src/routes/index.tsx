@@ -37,6 +37,9 @@ export const Route = createFileRoute("/")({
 const GITHUB = "https://github.com/Marsh09";
 const LINKEDIN =
   "https://www.linkedin.com/in/marshlino-nader-954794363";
+const EMAIL = "marshlino6@gmail.com";
+const PHONE = "01283977016";
+const PHONE_INTL = "+201283977016";
 
 /* ---------- data ---------- */
 
