@@ -460,48 +460,13 @@ function Projects() {
       </Reveal>
 
       <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {PROJECTS.map((p, i) => {
-          const Icon = p.icon;
-          return (
-            <Reveal
-              key={p.title}
-              delay={
-                i % 2 === 0
-                  ? "reveal-delay-1"
-                  : "reveal-delay-2"
-              }
-              as="article"
-            >
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all hover:border-signal/40 hover:bg-card">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-signal/5 blur-3xl transition-opacity group-hover:bg-signal/10" />
-                <div className="flex items-start justify-between">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-signal/25 bg-signal/10 text-signal">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="font-mono text-sm text-muted-foreground/70">
-                    {p.index}
-                  </span>
-                </div>
-                <h3 className="mt-5 font-display text-xl font-semibold text-foreground">
-                  {p.title}
-                </h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {p.blurb}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md border border-border/70 bg-background/60 px-2 py-1 font-mono text-[11px] text-foreground/70"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            </Reveal>
-          );
-        })}
+        {PROJECTS.map((p, i) => (
+          <ProjectCard
+            key={p.title}
+            project={p}
+            delay={i % 2 === 0 ? "reveal-delay-1" : "reveal-delay-2"}
+          />
+        ))}
       </div>
 
       {/* optional / in-progress */}
