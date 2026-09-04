@@ -585,29 +585,27 @@ function Contact() {
             </h2>
             <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
               Open to internships, collaborations, and a good engineering
-              problem. The fastest way to reach me is LinkedIn — I read every
+              problem. Reach me on GitHub, by email, or by phone — I read every
               message.
             </p>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href={LINKEDIN}
+                href={GITHUB}
                 target="_blank"
                 rel="noreferrer"
                 className="group inline-flex items-center justify-center gap-2 rounded-md bg-signal px-6 py-3.5 font-mono text-sm font-medium text-signal-foreground transition-all hover:signal-ring"
               >
-                <Linkedin className="h-4 w-4" />
-                Message on LinkedIn
+                <Github className="h-4 w-4" />
+                See my code on GitHub
                 <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
               <a
-                href={GITHUB}
-                target="_blank"
-                rel="noreferrer"
+                href={`mailto:${EMAIL}`}
                 className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-background/50 px-6 py-3.5 font-mono text-sm font-medium text-foreground transition-colors hover:border-signal/40 hover:bg-accent"
               >
-                <Github className="h-4 w-4" />
-                See my code
+                <Mail className="h-4 w-4" />
+                {EMAIL}
               </a>
             </div>
 
@@ -615,6 +613,18 @@ function Contact() {
               <span className="flex items-center gap-1.5">
                 <MapPin className="h-3.5 w-3.5 text-signal/70" /> Alexandria, Egypt
               </span>
+              <a
+                href={`tel:${PHONE_INTL}`}
+                className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+              >
+                <Phone className="h-3.5 w-3.5 text-signal/70" /> {PHONE}
+              </a>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="flex items-center gap-1.5 transition-colors hover:text-foreground"
+              >
+                <Mail className="h-3.5 w-3.5 text-signal/70" /> {EMAIL}
+              </a>
               <span className="flex items-center gap-1.5">
                 <Send className="h-3.5 w-3.5 text-signal/70" /> Open to remote & on-site internships
               </span>
