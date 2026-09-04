@@ -290,7 +290,7 @@ function Hero() {
               <ArrowDownRight className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
             </a>
             <a
-              href={LINKEDIN}
+              href={GITHUB}
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-md border border-border bg-card/50 px-5 py-3 font-mono text-sm font-medium text-foreground transition-colors hover:border-signal/40 hover:bg-accent"
