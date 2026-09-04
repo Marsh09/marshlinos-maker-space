@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowDownRight,
@@ -49,6 +50,10 @@ const PROJECTS = [
     title: "SOS Safety Device",
     blurb:
       "Arduino-based emergency unit that sends automated distress alerts. A SIM800L GSM module texts location, a Neo-6M GPS module supplies coordinates, and an ultrasonic sensor plus buzzer handle triggering and local alarm.",
+    details: [
+      "Built around an Arduino Uno, the device continuously polls an ultrasonic sensor to detect a distress trigger. On activation, the SIM800L dials a pre-set contact and sends an SMS carrying live GPS coordinates parsed from the Neo-6M NMEA sentence stream, while the buzzer fires a loud local alarm.",
+      "The hardest parts were power management for the GSM burst current, AT-command handshaking with the SIM800L, and waiting reliably for a GPS fix before sending coordinates. I worked through each with a mix of hardware filtering and state-machine code.",
+    ],
     tags: ["Arduino", "SIM800L", "Neo-6M GPS", "Ultrasonic", "Embedded C"],
     icon: Radio,
   },
@@ -57,6 +62,10 @@ const PROJECTS = [
     title: "Interactive Parking Counter",
     blurb:
       "A digital-systems build that counts cars in and out of a lot. JK flip-flops (74LS76) hold state, TCRT5000 IR sensors detect entry/exit, a 74LS47 BCD decoder drives the 7-segment display.",
+    details: [
+      "Designed the full logic on paper, then wired it on a breadboard. Two TCRT5000 IR sensor pairs sit at the entry and exit; each car crossing a beam clocks the 74LS76 JK flip-flop pair configured as an up/down counter — one direction increments, the other decrements.",
+      "The counter's BCD output feeds a 74LS47 decoder that drives common-anode 7-segment displays. Getting clean, bounce-free counts meant tuning the IR thresholds and adding hardware debouncing so a single car never read as two.",
+    ],
     tags: ["74LS76", "TCRT5000", "74LS47", "7-Segment", "Digital Logic"],
     icon: CircuitBoard,
   },
@@ -65,6 +74,10 @@ const PROJECTS = [
     title: "Infix-to-Postfix Converter",
     blurb:
       "A C program that transforms infix expressions into postfix notation using a stack. Built to ground my understanding of data structures beyond the textbook — operator precedence, associativity, and traversal.",
+    details: [
+      "A pure C implementation: read an infix expression character by character, emit operands immediately, and push operators onto a stack while respecting precedence and associativity. Parentheses and multi-digit numbers are handled, and the result is a clean postfix string.",
+      "I also added an optional evaluation step that walks the postfix expression with a value stack. Building it made operator precedence and stack mechanics click far more than the lecture notes ever did.",
+    ],
     tags: ["C", "Stacks", "Data Structures", "Algorithms"],
     icon: Code2,
   },
@@ -73,6 +86,10 @@ const PROJECTS = [
     title: "Supermarket Sales Data Analysis",
     blurb:
       "Python/Pandas pipeline over a retail dataset: data cleaning, profiling, and business-question analysis. Turned messy rows into answers about best-selling lines, peak periods, and branch performance.",
+    details: [
+      "Loaded a real retail dataset into Pandas, cleaned missing and malformed values, set correct dtypes, and engineered a couple of helper columns. Then profiled distributions and outliers to sanity-check the data before drawing conclusions.",
+      "Finally I answered the business questions: top-selling product lines, peak transaction hours, branch-vs-branch performance, and the payment-method mix. Results were presented with matplotlib charts so the numbers were easy to read at a glance.",
+    ],
     tags: ["Python", "Pandas", "Data Cleaning", "EDA"],
     icon: BarChart3,
   },
@@ -290,13 +307,11 @@ function Hero() {
               <ArrowDownRight className="h-4 w-4 transition-transform group-hover:translate-y-0.5" />
             </a>
             <a
-              href={GITHUB}
-              target="_blank"
-              rel="noreferrer"
+              href="#contact"
               className="inline-flex items-center gap-2 rounded-md border border-border bg-card/50 px-5 py-3 font-mono text-sm font-medium text-foreground transition-colors hover:border-signal/40 hover:bg-accent"
             >
               Get in touch
-              <ArrowUpRight className="h-4 w-4" />
+              <ArrowDownRight className="h-4 w-4" />
             </a>
           </Reveal>
 
@@ -430,7 +445,83 @@ function About() {
   );
 }
 
-/* ---------- projects ---------- */
+/* ---------- project card (expandable) ---------- */
+
+function ProjectCard({
+  project,
+  delay,
+}: {
+  project: (typeof PROJECTS)[number];
+  delay: "" | "reveal-delay-1" | "reveal-delay-2" | "reveal-delay-3" | "reveal-delay-4";
+}) {
+  const [open, setOpen] = useState(false);
+  const Icon = project.icon;
+  return (
+    <Reveal delay={delay} as="article">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all hover:border-signal/40 hover:bg-card">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-signal/5 blur-3xl transition-opacity group-hover:bg-signal/10" />
+        <div className="flex items-start justify-between">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-signal/25 bg-signal/10 text-signal">
+            <Icon className="h-5 w-5" />
+          </span>
+          <span className="font-mono text-sm text-muted-foreground/70">
+            {project.index}
+          </span>
+        </div>
+        <h3 className="mt-5 font-display text-xl font-semibold text-foreground">
+          {project.title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          {project.blurb}
+        </p>
+
+        {/* expandable details */}
+        <div
+          className="grid transition-all duration-500 ease-out"
+          style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        >
+          <div className="overflow-hidden">
+            <div className="mt-3 space-y-2.5 border-t border-border/70 pt-3">
+              {project.details.map((d, idx) => (
+                <p
+                  key={idx}
+                  className="text-sm leading-relaxed text-foreground/75"
+                >
+                  {d}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-1.5">
+          {project.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-md border border-border/70 bg-background/60 px-2 py-1 font-mono text-[11px] text-foreground/70"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className="mt-5 inline-flex items-center gap-1.5 self-start rounded-md border border-border/70 bg-background/60 px-3 py-1.5 font-mono text-xs text-signal transition-colors hover:border-signal/40 hover:bg-signal/10"
+        >
+          {open ? "Show less" : "Read more"}
+          <ArrowDownRight
+            className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </button>
+      </article>
+    </Reveal>
+  );
+}
+
+
 
 function Projects() {
   return (
@@ -445,48 +536,13 @@ function Projects() {
       </Reveal>
 
       <div className="mt-10 grid gap-5 md:grid-cols-2">
-        {PROJECTS.map((p, i) => {
-          const Icon = p.icon;
-          return (
-            <Reveal
-              key={p.title}
-              delay={
-                i % 2 === 0
-                  ? "reveal-delay-1"
-                  : "reveal-delay-2"
-              }
-              as="article"
-            >
-              <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all hover:border-signal/40 hover:bg-card">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-signal/5 blur-3xl transition-opacity group-hover:bg-signal/10" />
-                <div className="flex items-start justify-between">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-signal/25 bg-signal/10 text-signal">
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <span className="font-mono text-sm text-muted-foreground/70">
-                    {p.index}
-                  </span>
-                </div>
-                <h3 className="mt-5 font-display text-xl font-semibold text-foreground">
-                  {p.title}
-                </h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
-                  {p.blurb}
-                </p>
-                <div className="mt-5 flex flex-wrap gap-1.5">
-                  {p.tags.map((t) => (
-                    <span
-                      key={t}
-                      className="rounded-md border border-border/70 bg-background/60 px-2 py-1 font-mono text-[11px] text-foreground/70"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            </Reveal>
-          );
-        })}
+        {PROJECTS.map((p, i) => (
+          <ProjectCard
+            key={p.title}
+            project={p}
+            delay={i % 2 === 0 ? "reveal-delay-1" : "reveal-delay-2"}
+          />
+        ))}
       </div>
 
       {/* optional / in-progress */}
