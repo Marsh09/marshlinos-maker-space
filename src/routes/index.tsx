@@ -445,7 +445,83 @@ function About() {
   );
 }
 
-/* ---------- projects ---------- */
+/* ---------- project card (expandable) ---------- */
+
+function ProjectCard({
+  project,
+  delay,
+}: {
+  project: (typeof PROJECTS)[number];
+  delay: "" | "reveal-delay-1" | "reveal-delay-2" | "reveal-delay-3" | "reveal-delay-4";
+}) {
+  const [open, setOpen] = useState(false);
+  const Icon = project.icon;
+  return (
+    <Reveal delay={delay} as="article">
+      <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card/50 p-6 transition-all hover:border-signal/40 hover:bg-card">
+        <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-signal/5 blur-3xl transition-opacity group-hover:bg-signal/10" />
+        <div className="flex items-start justify-between">
+          <span className="flex h-11 w-11 items-center justify-center rounded-lg border border-signal/25 bg-signal/10 text-signal">
+            <Icon className="h-5 w-5" />
+          </span>
+          <span className="font-mono text-sm text-muted-foreground/70">
+            {project.index}
+          </span>
+        </div>
+        <h3 className="mt-5 font-display text-xl font-semibold text-foreground">
+          {project.title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          {project.blurb}
+        </p>
+
+        {/* expandable details */}
+        <div
+          className="grid transition-all duration-500 ease-out"
+          style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        >
+          <div className="overflow-hidden">
+            <div className="mt-3 space-y-2.5 border-t border-border/70 pt-3">
+              {project.details.map((d, idx) => (
+                <p
+                  key={idx}
+                  className="text-sm leading-relaxed text-foreground/75"
+                >
+                  {d}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-1.5">
+          {project.tags.map((t) => (
+            <span
+              key={t}
+              className="rounded-md border border-border/70 bg-background/60 px-2 py-1 font-mono text-[11px] text-foreground/70"
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          className="mt-5 inline-flex items-center gap-1.5 self-start rounded-md border border-border/70 bg-background/60 px-3 py-1.5 font-mono text-xs text-signal transition-colors hover:border-signal/40 hover:bg-signal/10"
+        >
+          {open ? "Show less" : "Read more"}
+          <ArrowDownRight
+            className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </button>
+      </article>
+    </Reveal>
+  );
+}
+
+
 
 function Projects() {
   return (
