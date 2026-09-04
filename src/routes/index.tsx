@@ -507,11 +507,17 @@ function ProjectCard({
 
         {/* right column: expandable details (rectangle) */}
         <div
-          className="grid transition-all duration-500 ease-out md:mt-0 md:pt-0"
+          className="grid transition-[grid-template-rows] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:mt-0 md:pt-0"
           style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
         >
           <div className="overflow-hidden">
-            <div className="mt-3 space-y-2.5 border-t border-border/70 pt-3 md:mt-0 md:border-l md:border-t-0 md:pl-8">
+            <div
+              className={`mt-3 space-y-2.5 border-t border-border/70 pt-3 transition-all duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:mt-0 md:border-l md:border-t-0 md:pl-8 ${
+                open
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-2 opacity-0"
+              }`}
+            >
               {project.details.map((d, idx) => (
                 <p
                   key={idx}
