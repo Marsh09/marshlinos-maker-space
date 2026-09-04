@@ -49,6 +49,10 @@ const PROJECTS = [
     title: "SOS Safety Device",
     blurb:
       "Arduino-based emergency unit that sends automated distress alerts. A SIM800L GSM module texts location, a Neo-6M GPS module supplies coordinates, and an ultrasonic sensor plus buzzer handle triggering and local alarm.",
+    details: [
+      "Built around an Arduino Uno, the device continuously polls an ultrasonic sensor to detect a distress trigger. On activation, the SIM800L dials a pre-set contact and sends an SMS carrying live GPS coordinates parsed from the Neo-6M NMEA sentence stream, while the buzzer fires a loud local alarm.",
+      "The hardest parts were power management for the GSM burst current, AT-command handshaking with the SIM800L, and waiting reliably for a GPS fix before sending coordinates. I worked through each with a mix of hardware filtering and state-machine code.",
+    ],
     tags: ["Arduino", "SIM800L", "Neo-6M GPS", "Ultrasonic", "Embedded C"],
     icon: Radio,
   },
@@ -57,6 +61,10 @@ const PROJECTS = [
     title: "Interactive Parking Counter",
     blurb:
       "A digital-systems build that counts cars in and out of a lot. JK flip-flops (74LS76) hold state, TCRT5000 IR sensors detect entry/exit, a 74LS47 BCD decoder drives the 7-segment display.",
+    details: [
+      "Designed the full logic on paper, then wired it on a breadboard. Two TCRT5000 IR sensor pairs sit at the entry and exit; each car crossing a beam clocks the 74LS76 JK flip-flop pair configured as an up/down counter — one direction increments, the other decrements.",
+      "The counter's BCD output feeds a 74LS47 decoder that drives common-anode 7-segment displays. Getting clean, bounce-free counts meant tuning the IR thresholds and adding hardware debouncing so a single car never read as two.",
+    ],
     tags: ["74LS76", "TCRT5000", "74LS47", "7-Segment", "Digital Logic"],
     icon: CircuitBoard,
   },
@@ -65,6 +73,10 @@ const PROJECTS = [
     title: "Infix-to-Postfix Converter",
     blurb:
       "A C program that transforms infix expressions into postfix notation using a stack. Built to ground my understanding of data structures beyond the textbook — operator precedence, associativity, and traversal.",
+    details: [
+      "A pure C implementation: read an infix expression character by character, emit operands immediately, and push operators onto a stack while respecting precedence and associativity. Parentheses and multi-digit numbers are handled, and the result is a clean postfix string.",
+      "I also added an optional evaluation step that walks the postfix expression with a value stack. Building it made operator precedence and stack mechanics click far more than the lecture notes ever did.",
+    ],
     tags: ["C", "Stacks", "Data Structures", "Algorithms"],
     icon: Code2,
   },
@@ -73,6 +85,10 @@ const PROJECTS = [
     title: "Supermarket Sales Data Analysis",
     blurb:
       "Python/Pandas pipeline over a retail dataset: data cleaning, profiling, and business-question analysis. Turned messy rows into answers about best-selling lines, peak periods, and branch performance.",
+    details: [
+      "Loaded a real retail dataset into Pandas, cleaned missing and malformed values, set correct dtypes, and engineered a couple of helper columns. Then profiled distributions and outliers to sanity-check the data before drawing conclusions.",
+      "Finally I answered the business questions: top-selling product lines, peak transaction hours, branch-vs-branch performance, and the payment-method mix. Results were presented with matplotlib charts so the numbers were easy to read at a glance.",
+    ],
     tags: ["Python", "Pandas", "Data Cleaning", "EDA"],
     icon: BarChart3,
   },
